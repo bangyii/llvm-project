@@ -68,6 +68,7 @@ public:
     Dict.handle("Completion", [&](Node &N) { parse(F.Completion, N); });
     Dict.handle("Hover", [&](Node &N) { parse(F.Hover, N); });
     Dict.handle("InlayHints", [&](Node &N) { parse(F.InlayHints, N); });
+    Dict.handle("RenameOptions", [&](Node &N) { parse(F.RenameOptions, N); });
     Dict.parse(N);
     return !(N.failed() || HadError);
   }
@@ -247,6 +248,15 @@ private:
     Dict.handle("Designators", [&](Node &N) {
       if (auto Value = boolValue(N, "Designators"))
         F.Designators = *Value;
+    });
+    Dict.parse(N);
+  }
+
+  void parse(Fragment::RenameOptionsBlock &F, Node &N) {
+    DictParser Dict("RenameOptions", this);
+    Dict.handle("MaxFileLimit", [&](Node &N) {
+      if (auto Value = boolValue(N, "MaxFileLimit"))
+        F.MaxFileLimit = *Value;
     });
     Dict.parse(N);
   }

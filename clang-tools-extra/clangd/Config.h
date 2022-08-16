@@ -140,6 +140,10 @@ struct Config {
     bool DeducedTypes = true;
     bool Designators = true;
   } InlayHints;
+
+  struct {
+    bool MaxFileLimit = false;
+  } RenameOptions;
 };
 
 } // namespace clangd

@@ -8,6 +8,7 @@
 
 #include "refactor/Rename.h"
 #include "AST.h"
+#include "Config.h"
 #include "FindTarget.h"
 #include "ParsedAST.h"
 #include "Selection.h"
@@ -786,10 +787,12 @@ llvm::Expected<RenameResult> rename(const RenameInputs &RInputs) {
     return Result;
   }
 
+  const auto &Cfg = Config::current();
   auto OtherFilesEdits = renameOutsideFile(
       RenameDecl, RInputs.MainFilePath, RInputs.NewName, *RInputs.Index,
-      Opts.LimitFiles == 0 ? std::numeric_limits<size_t>::max()
-                           : Opts.LimitFiles,
+      Opts.LimitFiles == 0 || Cfg.RenameOptions.MaxFileLimit
+          ? std::numeric_limits<size_t>::max()
+          : Opts.LimitFiles,
       *RInputs.FS);
   if (!OtherFilesEdits)
     return OtherFilesEdits.takeError();

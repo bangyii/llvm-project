@@ -198,6 +198,7 @@ struct FragmentCompiler {
     compile(std::move(F.Hover));
     compile(std::move(F.InlayHints));
     compile(std::move(F.Style));
+    compile(std::move(F.RenameOptions));
   }
 
   void compile(Fragment::IfBlock &&F) {
@@ -585,6 +586,13 @@ struct FragmentCompiler {
     if (F.Designators)
       Out.Apply.push_back([Value(**F.Designators)](const Params &, Config &C) {
         C.InlayHints.Designators = Value;
+      });
+  }
+
+  void compile(Fragment::RenameOptionsBlock &&F) {
+    if (F.MaxFileLimit)
+      Out.Apply.push_back([Value(**F.MaxFileLimit)](const Params &, Config &C) {
+        C.RenameOptions.MaxFileLimit = Value;
       });
   }
 

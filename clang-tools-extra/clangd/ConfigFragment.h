@@ -307,6 +307,11 @@ struct Fragment {
     llvm::Optional<Located<bool>> Designators;
   };
   InlayHintsBlock InlayHints;
+
+  struct RenameOptionsBlock {
+    llvm::Optional<Located<bool>> MaxFileLimit;
+  };
+  RenameOptionsBlock RenameOptions;
 };
 
 } // namespace config
